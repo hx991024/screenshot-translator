@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  padding: 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+header h1 {
+  font-size: 20px;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #666;
+}
+
+.status-section {
+  margin-bottom: 16px;
+}
+
+.status-badge {
+  padding: 8px 12px;
+  background: #e8f5e9;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 13px;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.status-badge.error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-badge.loading {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.action-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1565c0;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: white;
+  color: #1976d2;
+  border: 1px solid #1976d2;
+}
+
+.btn-secondary:hover {
+  background: #f0f7ff;
+}
+
+.info-section, .config-check {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.info-section h3, .config-check h3 {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.info-section ol {
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.info-section li {
+  margin-bottom: 4px;
+}
+
+.config-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.config-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.config-item span:first-child {
+  color: #666;
+  font-weight: 500;
+}
+
+.config-item span:last-child {
+  color: #333;
+  font-weight: 600;
+}
+
+.config-item span:last-child.ok {
+  color: #2e7d32;
+}
+
+.config-item span:last-child.error {
+  color: #c62828;
+}
