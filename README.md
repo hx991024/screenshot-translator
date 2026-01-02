@@ -1,4 +1,4 @@
-# 🎨 漫画翻译器 - 多模态 AI
+# 🎨 截图翻译器 - 多模态 AI
 
 一款浏览器插件，通过框选网页区域，使用多模态 AI 进行图片文字识别和翻译。
 
@@ -12,10 +12,15 @@
 ## 🏗️ 项目结构
 
 ```
-comic-translator/
+screenshot-translator/
 ├── manifest.json              # Manifest V3 配置
 ├── README.md                  # 项目说明
-├── GUAID.md                   # 开发指南（原始需求）
+├── assets/                    # 静态资源
+│   └── icons/                 # 插件图标
+│       ├── icon-16.png
+│       ├── icon-32.png
+│       ├── icon-48.png
+│       └── icon-128.png
 └── src/
     ├── popup.html            # 插件主界面
     ├── popup.css             # Popup 样式
@@ -32,6 +37,7 @@ comic-translator/
 ### 1. 准备工作
 
 确保你有以下 API 之一的访问权限：
+
 - OpenAI (GPT-4o, GPT-4V)
 - 智谱 AI (GLM-4V)
 - 阿里云通义千问 (Qwen-VL)
@@ -91,29 +97,36 @@ comic-translator/
 // 1. 使用 Chrome API 截取整个可见页面
 const dataUrl = await chrome.tabs.captureVisibleTab(null, {
   format: 'png',
-  quality: 100
-});
+  quality: 100,
+})
 
 // 2. 在 Canvas 上裁剪选区
-const img = new Image();
+const img = new Image()
 img.onload = () => {
-  const scaleX = img.width / window.innerWidth;
-  const scaleY = img.height / window.innerHeight;
+  const scaleX = img.width / window.innerWidth
+  const scaleY = img.height / window.innerHeight
 
-  canvas.width = width * scaleX;
-  canvas.height = height * scaleY;
+  canvas.width = width * scaleX
+  canvas.height = height * scaleY
 
   ctx.drawImage(
     img,
-    left * scaleX, top * scaleY, width * scaleX, height * scaleY,
-    0, 0, canvas.width, canvas.height
-  );
+    left * scaleX,
+    top * scaleY,
+    width * scaleX,
+    height * scaleY,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+  )
 
-  const croppedBase64 = canvas.toDataURL('image/png', 1.0);
-};
+  const croppedBase64 = canvas.toDataURL('image/png', 1.0)
+}
 ```
 
 **优势**:
+
 - ✅ 支持跨 iframe、Canvas、图片
 - ✅ 高分辨率，适合 OCR
 - ✅ 无需复杂 DOM 计算
@@ -127,7 +140,7 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKey}`
+    Authorization: `Bearer ${apiKey}`,
   },
   body: JSON.stringify({
     model: model,
@@ -136,13 +149,13 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
         role: 'user',
         content: [
           { type: 'text', text: prompt },
-          { type: 'image_url', image_url: { url: imageData } }
-        ]
-      }
+          { type: 'image_url', image_url: { url: imageData } },
+        ],
+      },
     ],
-    max_tokens: 2000
-  })
-});
+    max_tokens: 2000,
+  }),
+})
 ```
 
 ### 4. 翻译结果显示 (content.js)
@@ -176,6 +189,7 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
 在设置页面可以自定义 Prompt，例如：
 
 **漫画专用 Prompt**:
+
 ```text
 你将看到一张漫画截图。
 
@@ -194,17 +208,18 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
 ```json
 {
   "permissions": [
-    "activeTab",      // 访问当前标签页
-    "storage",        // 存储配置
-    "scripting"       // 注入脚本
+    "activeTab", // 访问当前标签页
+    "storage", // 存储配置
+    "scripting" // 注入脚本
   ],
   "host_permissions": [
-    "<all_urls>"      // 所有网站
+    "<all_urls>" // 所有网站
   ]
 }
 ```
 
 **隐私说明**:
+
 - ✅ API Key 仅存储在本地浏览器
 - ✅ 截图数据仅用于 API 调用
 - ✅ 不收集任何用户数据
@@ -219,6 +234,7 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
 **原因**: 旧版本测试图片为 1x1 像素，不符合模型要求
 
 **解决方案**:
+
 - 测试图片现在使用 100x100 像素
 - 截图裁剪自动检查最小尺寸（50x50）
 - 用户框选要求至少 30x30 像素
@@ -228,33 +244,43 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
 ---
 
 ### Q: 截图失败
+
 **A**:
+
 1. 检查是否在 `chrome://` 或 `edge://` 页面（这些页面不允许截图）
 2. 确保插件有截图权限
 3. 尝试刷新页面后重试
 
 ### Q: API 调用失败
+
 **A**:
+
 1. 检查 API Base URL 是否正确
 2. 验证 API Key 是否有效
 3. 确认模型名称是否支持多模态
 4. 查看 [TROUBLESHOOTING.md](TROUBLESHOOTING.md) 获取详细错误排查
 
 ### Q: 翻译结果不准确
+
 **A**:
+
 1. 尝试调整 Prompt
 2. 选择更高分辨率的模型
 3. 确保选区包含清晰的文字
 4. 可以重新翻译
 
 ### Q: 蒙版显示异常
+
 **A**:
+
 1. 检查页面是否有特殊的 CSS 定位
 2. 尝试重新框选
 3. 关闭蒙版后重新翻译
 
 ### Q: 如何选择合适的 API？
+
 **A**:
+
 - **中文漫画**: 智谱 AI (glm-4v) - 快速且便宜
 - **英文翻译**: OpenAI (gpt-4o) - 最准确
 - **国内服务**: 阿里云 (qwen-vl) - 稳定可靠
@@ -274,20 +300,13 @@ const response = await fetch(`${baseUrl}/chat/completions`, {
 ## 📝 开发调试
 
 ### 加载插件
+
 1. `chrome://extensions/` → 开发者模式 → 加载已解压
 2. 修改代码后，点击扩展页面的"刷新"按钮
 3. 重新加载目标网页
 
 ### 查看日志
+
 - **Popup**: 右键插件图标 → 检查
 - **Content Script**: 在目标网页按 F12 → Console
 - **Background**: 扩展页面 → "检查视图" → Service Worker
-
-## 📄 License
-
-MIT License
-
----
-
-**开发完成** ✅
-基于 GUAID.md 需求，完整实现了所有核心功能。

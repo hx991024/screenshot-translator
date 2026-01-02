@@ -100,6 +100,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (result && result.success) {
         updateStatus('框选完成，正在处理...', 'loading');
+        // 关闭插件页面
+        window.close();
       } else {
         updateStatus('已取消框选', 'error');
         setTimeout(() => updateStatus('准备就绪', ''), 2000);
