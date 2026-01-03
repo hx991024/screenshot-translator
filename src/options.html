@@ -1,124 +1,128 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>设置 - 漫画翻译器</title>
-  <link rel="stylesheet" href="options.css">
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>⚙️ 漫画翻译器设置</h1>
-      <p>配置多模态 AI API 参数</p>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>设置 - 截图翻译器</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>⚙️ 截图翻译器设置</h1>
+        <p>配置多模态 AI API 参数</p>
+      </header>
 
-    <form id="settingsForm">
-      <div class="form-group">
-        <label for="apiBaseUrl">
-          API Base URL
-          <span class="required" title="必填">*</span>
-        </label>
-        <input
-          type="url"
-          id="apiBaseUrl"
-          placeholder="例如: https://api.openai.com/v1"
-          required
-        >
-        <small class="help-text">OpenAI 兼容 API 的基础 URL</small>
+      <form id="settingsForm">
+        <div class="form-group">
+          <label for="apiBaseUrl">
+            API Base URL
+            <span class="required" title="必填">*</span>
+          </label>
+          <input
+            type="url"
+            id="apiBaseUrl"
+            placeholder="例如: https://api.openai.com/v1"
+            required
+          />
+          <small class="help-text">OpenAI 兼容 API 的基础 URL</small>
+        </div>
+
+        <div class="form-group">
+          <label for="apiKey">
+            API Key
+            <span class="required" title="必填">*</span>
+          </label>
+          <input
+            type="password"
+            id="apiKey"
+            placeholder="sk-... 或其他 API 密钥"
+            required
+          />
+          <small class="help-text"
+            >您的 API 访问密钥（不会上传到任何地方）</small
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="model">
+            模型名称
+            <span class="required" title="必填">*</span>
+          </label>
+          <input
+            type="text"
+            id="model"
+            placeholder="例如: gpt-4o, glm-4v, qwen-vl, claude-3-5-sonnet"
+            required
+          />
+          <small class="help-text">支持多模态（图像+文本）的模型名称</small>
+        </div>
+
+        <div class="form-group">
+          <label for="targetLang">
+            目标翻译语言
+            <span class="required" title="必填">*</span>
+          </label>
+          <select id="targetLang" required>
+            <option value="">请选择...</option>
+            <option value="简体中文">简体中文</option>
+            <option value="繁体中文">繁体中文</option>
+            <option value="English">English</option>
+            <option value="日本語">日本語</option>
+            <option value="한국어">한국어</option>
+            <option value="Español">Español</option>
+            <option value="Français">Français</option>
+            <option value="Deutsch">Deutsch</option>
+            <option value="Русский">Русский</option>
+          </select>
+          <small class="help-text">图片中的文字将被翻译成此语言</small>
+        </div>
+
+        <div class="form-group">
+          <label for="customPrompt"> 自定义 Prompt（可选） </label>
+          <textarea
+            id="customPrompt"
+            rows="6"
+            placeholder="留空使用默认 Prompt"
+          ></textarea>
+          <small class="help-text"
+            >自定义 AI 翻译指令，留空则使用默认模板</small
+          >
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">💾 保存设置</button>
+          <button type="button" class="btn-test" id="testBtn">
+            🧪 测试 API
+          </button>
+          <button type="button" class="btn-reset" id="resetBtn">🔄 重置</button>
+        </div>
+      </form>
+
+      <div class="test-result" id="testResult" style="display: none"></div>
+
+      <div class="info-section">
+        <h3>支持的 API 兼容服务</h3>
+        <ul>
+          <li>OpenAI (GPT-4o, GPT-4V)</li>
+          <li>智谱 AI (GLM-4V)</li>
+          <li>阿里云通义千问 (Qwen-VL)</li>
+          <li>Anthropic (Claude 3.5 Sonnet)</li>
+          <li>其他 OpenAI 兼容 API</li>
+        </ul>
       </div>
 
-      <div class="form-group">
-        <label for="apiKey">
-          API Key
-          <span class="required" title="必填">*</span>
-        </label>
-        <input
-          type="password"
-          id="apiKey"
-          placeholder="sk-... 或其他 API 密钥"
-          required
-        >
-        <small class="help-text">您的 API 访问密钥（不会上传到任何地方）</small>
+      <div class="tips">
+        <h3>💡 使用提示</h3>
+        <ol>
+          <li>确保 API 支持多模态（图像+文本）输入</li>
+          <li>API Key 仅存储在本地浏览器中</li>
+          <li>截图数据不会离开您的浏览器，除非用于 API 调用</li>
+          <li>建议使用支持高分辨率图像的模型以获得更好的 OCR 效果</li>
+        </ol>
       </div>
-
-      <div class="form-group">
-        <label for="model">
-          模型名称
-          <span class="required" title="必填">*</span>
-        </label>
-        <input
-          type="text"
-          id="model"
-          placeholder="例如: gpt-4o, glm-4v, qwen-vl, claude-3-5-sonnet"
-          required
-        >
-        <small class="help-text">支持多模态（图像+文本）的模型名称</small>
-      </div>
-
-      <div class="form-group">
-        <label for="targetLang">
-          目标翻译语言
-          <span class="required" title="必填">*</span>
-        </label>
-        <select id="targetLang" required>
-          <option value="">请选择...</option>
-          <option value="简体中文">简体中文</option>
-          <option value="繁体中文">繁体中文</option>
-          <option value="English">English</option>
-          <option value="日本語">日本語</option>
-          <option value="한국어">한국어</option>
-          <option value="Español">Español</option>
-          <option value="Français">Français</option>
-          <option value="Deutsch">Deutsch</option>
-          <option value="Русский">Русский</option>
-        </select>
-        <small class="help-text">图片中的文字将被翻译成此语言</small>
-      </div>
-
-      <div class="form-group">
-        <label for="customPrompt">
-          自定义 Prompt（可选）
-        </label>
-        <textarea
-          id="customPrompt"
-          rows="6"
-          placeholder="留空使用默认 Prompt"
-        ></textarea>
-        <small class="help-text">自定义 AI 翻译指令，留空则使用默认模板</small>
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn-save">💾 保存设置</button>
-        <button type="button" class="btn-test" id="testBtn">🧪 测试 API</button>
-        <button type="button" class="btn-reset" id="resetBtn">🔄 重置</button>
-      </div>
-    </form>
-
-    <div class="test-result" id="testResult" style="display: none;"></div>
-
-    <div class="info-section">
-      <h3>支持的 API 兼容服务</h3>
-      <ul>
-        <li>OpenAI (GPT-4o, GPT-4V)</li>
-        <li>智谱 AI (GLM-4V)</li>
-        <li>阿里云通义千问 (Qwen-VL)</li>
-        <li>Anthropic (Claude 3.5 Sonnet)</li>
-        <li>其他 OpenAI 兼容 API</li>
-      </ul>
     </div>
 
-    <div class="tips">
-      <h3>💡 使用提示</h3>
-      <ol>
-        <li>确保 API 支持多模态（图像+文本）输入</li>
-        <li>API Key 仅存储在本地浏览器中</li>
-        <li>截图数据不会离开您的浏览器，除非用于 API 调用</li>
-        <li>建议使用支持高分辨率图像的模型以获得更好的 OCR 效果</li>
-      </ol>
-    </div>
-  </div>
-
-  <script src="options.js"></script>
-</body>
+    <script src="options.js"></script>
+  </body>
 </html>

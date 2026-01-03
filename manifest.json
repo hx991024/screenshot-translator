@@ -1,25 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "漫画翻译器 - 多模态 AI",
-  "version": "1.0.0",
+  "name": "截图翻译器 - 多模态 AI",
+  "version": "1.0.1",
   "description": "通过框选网页区域，使用多模态 AI 进行图片文字识别和翻译",
+  "author": "hx991024",
   "icons": {
     "16": "assets/icons/icon-16.png",
     "32": "assets/icons/icon-32.png",
     "48": "assets/icons/icon-48.png",
     "128": "assets/icons/icon-128.png"
   },
-  "permissions": [
-    "activeTab",
-    "storage",
-    "scripting"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "src/popup.html",
-    "default_title": "漫画翻译器"
+    "default_title": "截图翻译器"
   },
   "options_page": "src/options.html",
   "background": {
